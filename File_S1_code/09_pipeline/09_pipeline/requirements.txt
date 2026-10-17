@@ -1,0 +1,14 @@
+pandas>=2.2
+numpy
+pyarrow
+duckdb>=1.0
+geopandas>=0.14
+shapely
+pyproj
+pyogrio
+xgboost>=2.0
+scikit-learn>=1.4
+matplotlib
+pyyaml
+openpyxl
+sentence-transformers   # A6 review-semantic comparator (pulls PyTorch, ~1 GB first install)

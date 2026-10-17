@@ -1,0 +1,47 @@
+# One-command pipeline config. All paths are relative to the project root
+# (the folder that contains 01_raw/). Run:  python 09_pipeline/run_all.py
+paths:
+  airbnb_dir: 01_raw/airbnb                 # 11 dated sub-folders with listings/calendar/reviews .csv(.gz)
+  ta_dir: 01_raw/geography                  # Stats NZ TA 2025 shapefile (searched recursively for *.shp)
+  consents_file: 01_raw/construction/statsnz_building_consents_ta_monthly_2020M01_2026M07.csv
+  consents_tidy: null                       # optional tidy CSV (ta_name,month,value) if the Infoshare parser fails
+  consents_release_calendar: 07_provenance/consents_release_calendar.csv   # ref_month,release_date,source_url
+  bond_file: 01_raw/property_market/detailed-monthly-tla-tenancy-september.csv
+  hpi_file: 01_raw/property_market/Property-and-Sales-data-download-June-2026.xlsx
+  adp_file: 01_raw/seasonality/ADP_All_Measures.csv
+  out_dir: 09_pipeline_out
+
+consents:
+  include_regex: "new"        # keep Infoshare columns whose header matches (case-insensitive)
+  exclude_regex: "total|all buildings|value|floor area|\\$"   # drop totals/value/area columns
+  fallback_lag_months: 3      # used ONLY if the release calendar is absent (conservative, flagged UNVERIFIED)
+
+bond:
+  lag_months: 3               # month M-2 data is released during month M -> conservative M-3 at origin
+
+seasonality:
+  profile_years: [2023, 2024]
+  time_col: null              # null = auto-detect; set explicitly if auto-detect fails
+  value_col: null
+  filters: {}                 # e.g. {"Measure": "Guest nights", "Region": "Total"}
+
+hpi_robustness:
+  enabled: true
+  lag_months: 4
+
+model:
+  dev_windows: [4, 5, 6, 7, 8, 9]
+  test_window: 10
+  seed: 2026
+  bootstrap_reps: 600
+  xgb: {n_estimators: 500, max_depth: 6, learning_rate: 0.05, subsample: 0.8,
+        colsample_bytree: 0.8, min_child_weight: 5, reg_lambda: 1.0}
+  topk: [0.01, 0.05, 0.10, 0.20, 0.30]
+  calib_min_rel_gain: 0.005
+
+semantic:                     # A6 comparator: pooled embeddings of review text (never redistributed)
+  enabled: true
+  model: sentence-transformers/all-MiniLM-L6-v2   # 384-dimensional; downloaded once on first run
+  max_reviews_per_listing: 10                     # most recent reviews dated <= nominal origin
+  max_chars: 512
+  batch_size: 128

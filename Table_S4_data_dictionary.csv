@@ -1,0 +1,65 @@
+variable,role,family,dtype,n,missing_n,missing_pct,n_unique,min,max,description
+transition,key/metadata,,object,491140,0,0.0,10,,,Rolling-origin transition T1-T10 (origin snapshot -> next snapshot)
+listing_id,key/metadata,,int64,491140,0,0.0,62353,36194,1728088710179924120,Inside Airbnb listing identifier
+snapshot_date,key/metadata,,datetime64[ns],491140,0,0.0,10,2025-10-05 00:00:00,2026-07-12 00:00:00,Nominal Inside Airbnb snapshot label of the origin
+last_scraped,key/metadata,,datetime64[ns],491140,0,0.0,32,2025-10-07 00:00:00,2026-07-16 00:00:00,Date the origin listing record was scraped
+anchor_date,key/metadata,,datetime64[ns],491140,0,0.0,10,2025-10-05 00:00:00,2026-07-12 00:00:00,Origin nominal date (same as snapshot_date)
+future_date,key/metadata,,datetime64[ns],491140,0,0.0,10,2025-11-07 00:00:00,2026-08-13 00:00:00,Nominal date of the next snapshot (label only; not a predictor)
+evaluation_role,key/metadata,,object,491140,0,0.0,2,,,DEVELOPMENT (T1-T9) or LOCKED_T10
+next_period_persistence,outcome,,int8,491140,0,0.0,2,0,1,Primary label: 1 = listing present in next snapshot; disappearance = 1 - value
+secondary_price_available,outcome,,int64,491140,0,0.0,2,0,1,1 if secondary price-percentile change is defined
+price_resilience_delta,outcome,,float64,491140,231441,47.123,215392,-0.9600392256238881,0.9977845834228812,Secondary outcome: change in within-peer advertised-price percentile
+price,key/metadata,,Float64,491140,172898,35.203,19791,4.87,182817.0,Origin advertised nightly price (outcome construction only; not a predictor)
+property_type,predictor (A5),property,object,491140,0,0.0,116,,,copied from Inside Airbnb listings field after type cleaning
+room_type,predictor (A5),property,object,491140,0,0.0,4,,,copied from Inside Airbnb listings field after type cleaning
+accommodates,predictor (A5),property,int64,491140,0,0.0,16,1,16,copied from Inside Airbnb listings field after type cleaning
+bathrooms,predictor (A5),property,float64,491140,41984,8.548,29,0.0,37.0,copied from Inside Airbnb listings field after type cleaning
+bedrooms,predictor (A5),property,float64,491140,20507,4.175,27,0.0,52.0,copied from Inside Airbnb listings field after type cleaning
+beds,predictor (A5),property,float64,491140,34144,6.952,44,0.0,118.0,copied from Inside Airbnb listings field after type cleaning
+amenities_count,predictor (A5),property,Int32,491140,0,0.0,113,0,114,count of items in the amenities JSON list (02_clean_listings.py)
+host_is_superhost,predictor (A5),platform,Int8,491140,2235,0.455,2,0,1,copied from Inside Airbnb listings field after type cleaning
+host_listings_count,predictor (A5),platform,float64,491140,78,0.016,221,0.0,1597.0,copied from Inside Airbnb listings field after type cleaning
+host_has_profile_pic,predictor (A5),platform,Int8,491140,78,0.016,2,0,1,copied from Inside Airbnb listings field after type cleaning
+host_identity_verified,predictor (A5),platform,Int8,491140,78,0.016,2,0,1,copied from Inside Airbnb listings field after type cleaning
+minimum_nights,predictor (A5),platform,float64,491140,337,0.069,72,1.0,1000.0,copied from Inside Airbnb listings field after type cleaning
+maximum_nights,predictor (A5),platform,float64,491140,337,0.069,242,1.0,2147483647.0,copied from Inside Airbnb listings field after type cleaning
+number_of_reviews,predictor (A5),platform,int64,491140,0,0.0,1259,0,1763,copied from Inside Airbnb listings field after type cleaning
+number_of_reviews_ltm,predictor (A5),platform,int64,491140,0,0.0,229,0,332,copied from Inside Airbnb listings field after type cleaning
+number_of_reviews_l30d,predictor (A5),platform,int64,491140,0,0.0,32,0,48,copied from Inside Airbnb listings field after type cleaning
+calculated_host_listings_count,predictor (A5),platform,int64,491140,0,0.0,166,1,1586,copied from Inside Airbnb listings field after type cleaning
+calculated_host_listings_count_entire_homes,predictor (A5),platform,int64,491140,0,0.0,168,0,1584,copied from Inside Airbnb listings field after type cleaning
+calculated_host_listings_count_private_rooms,predictor (A5),platform,int64,491140,0,0.0,34,0,69,copied from Inside Airbnb listings field after type cleaning
+calculated_host_listings_count_shared_rooms,predictor (A5),platform,int64,491140,0,0.0,15,0,28,copied from Inside Airbnb listings field after type cleaning
+reviews_per_month,predictor (A5),platform,float64,491140,48638,9.903,1544,0.01,25.17,copied from Inside Airbnb listings field after type cleaning
+listing_review_age_days,predictor (A5),platform,float64,491140,48638,9.903,5071,0.0,5555.0,last_scraped - first_review in days (02_clean_listings.py lines ~278-285)
+days_since_last_review,predictor (A5),platform,float64,491140,48638,9.903,3217,0.0,4881.0,last_scraped - last_review in days (02_clean_listings.py lines ~287-293)
+ta_code,predictor (A5),geography,string,491140,0,0.0,68,,,point-in-polygon assignment to Stats NZ TA 2025 boundaries; code 999 = Area Outside TA
+rental_geomean_rent_log,predictor (A5),rental,float64,491140,3790,0.772,262,5.6131281063880705,6.637258031284457,log(geometric mean weekly rent) at origin month - 2
+rental_geomean_rent_change_12m_log,predictor (A5),rental,float64,491140,4361,0.888,639,-0.31585294941847764,0.7582337970798312,log(geometric mean weekly rent) at origin month - 2 ; minus log value 12 months earlier
+construction_dwelling_3m_log,predictor (A5),construction,float64,491140,2448,0.498,215,0.0,8.476162841858246,"log1p(sum of new dwelling units, 3 months ending at latest released month)"
+construction_dwelling_12m_log,predictor (A5),construction,float64,491140,2448,0.498,374,0.0,9.732877151670184,"log1p(sum, 12 months ending at latest released month)"
+construction_momentum_3m_vs_prior9m,predictor (A5),construction,float64,491140,2448,0.498,602,-1.4469189829363254,0.8909729238898653,log1p(3m monthly pace) - log1p(prior 9m monthly pace)
+construction_multiunit_share_12m,predictor (A5),construction,float64,491140,2457,0.5,543,0.0,0.7747572815533981,"(apartments + townhouses/flats/units/other) / dwelling units, 12 months"
+forecast_horizon_days,predictor (A5),seasonality,int64,491140,0,0.0,9,23,37,future_snapshot_date - origin_snapshot_date (days)
+historical_seasonality_index_horizon,predictor (A5),seasonality,float64,491140,0,0.0,590,0.44907550077041597,2.027294739159146,"day-weighted mean of the TA (or NZ fallback) 2023-2024 monthly seasonal index over [origin date, next snapshot date)"
+month_sin,predictor (A5),seasonality,float64,491140,0,0.0,9,-0.8660254037844386,1.0,sin(2*pi*origin_month/12)
+month_cos,predictor (A5),seasonality,float64,491140,0,0.0,9,-1.0,1.0,cos(2*pi*origin_month/12)
+open_ratio_w1,predictor (A5),calendar,float64,491140,0,0.0,8,0.0,1.0,first 28 observed calendar dates per listing; w1-w4 = 7-day blocks; open ratio = share available; median minimum nights
+median_minimum_nights_w1,predictor (A5),calendar,float64,491140,0,0.0,89,1.0,1000.0,first 28 observed calendar dates per listing; w1-w4 = 7-day blocks; open ratio = share available; median minimum nights
+open_ratio_w2,predictor (A5),calendar,float64,491140,0,0.0,8,0.0,1.0,first 28 observed calendar dates per listing; w1-w4 = 7-day blocks; open ratio = share available; median minimum nights
+median_minimum_nights_w2,predictor (A5),calendar,float64,491140,0,0.0,90,1.0,1000.0,first 28 observed calendar dates per listing; w1-w4 = 7-day blocks; open ratio = share available; median minimum nights
+open_ratio_w3,predictor (A5),calendar,float64,491140,0,0.0,8,0.0,1.0,first 28 observed calendar dates per listing; w1-w4 = 7-day blocks; open ratio = share available; median minimum nights
+median_minimum_nights_w3,predictor (A5),calendar,float64,491140,0,0.0,90,1.0,1000.0,first 28 observed calendar dates per listing; w1-w4 = 7-day blocks; open ratio = share available; median minimum nights
+open_ratio_w4,predictor (A5),calendar,float64,491140,0,0.0,8,0.0,1.0,first 28 observed calendar dates per listing; w1-w4 = 7-day blocks; open ratio = share available; median minimum nights
+median_minimum_nights_w4,predictor (A5),calendar,float64,491140,0,0.0,91,1.0,1000.0,first 28 observed calendar dates per listing; w1-w4 = 7-day blocks; open ratio = share available; median minimum nights
+open_ratio_28d,predictor (A5),calendar,float64,491140,0,0.0,29,0.0,1.0,first 28 observed calendar dates per listing; w1-w4 = 7-day blocks; open ratio = share available; median minimum nights
+median_minimum_nights_28d,predictor (A5),calendar,float64,491140,0,0.0,107,1.0,1000.0,first 28 observed calendar dates per listing; w1-w4 = 7-day blocks; open ratio = share available; median minimum nights
+review_scores_rating,predictor (A5),review_history,float64,491140,48624,9.9,156,1.0,5.0,Inside Airbnb aggregate review score at scrape time
+review_scores_accuracy,predictor (A5),review_history,float64,491140,48636,9.903,158,0.0,5.0,Inside Airbnb aggregate review score at scrape time
+review_scores_cleanliness,predictor (A5),review_history,float64,491140,48626,9.901,174,0.0,5.0,Inside Airbnb aggregate review score at scrape time
+review_scores_checkin,predictor (A5),review_history,float64,491140,48636,9.903,151,0.0,5.0,Inside Airbnb aggregate review score at scrape time
+review_scores_communication,predictor (A5),review_history,float64,491140,48636,9.903,154,0.0,5.0,Inside Airbnb aggregate review score at scrape time
+review_scores_location,predictor (A5),review_history,float64,491140,48636,9.903,128,0.0,5.0,Inside Airbnb aggregate review score at scrape time
+review_scores_value,predictor (A5),review_history,float64,491140,48636,9.903,170,0.0,5.0,Inside Airbnb aggregate review score at scrape time
+review_count_365d,predictor (A5),review_history,int32,491140,0,0.0,236,0,333,"count of origin-file reviews dated in (nominal origin - 365 d, nominal origin]; available = count > 0"
+review_available,predictor (A5),review_history,int8,491140,0,0.0,2,0,1,"count of origin-file reviews dated in (nominal origin - 365 d, nominal origin]; available = count > 0"

@@ -1,0 +1,18 @@
+# Python 3.13.9 (Anaconda, Windows 11). Versions observed in the environment that produced the frozen
+# models (joblib artefacts) and ran the audit on 12 Oct 2026. XGBoost and scikit-learn versions must match
+# to unpickle the frozen pipelines and reproduce T10 probabilities exactly.
+numpy==2.3.5
+pandas==2.3.3
+pyarrow==21.0.0
+scikit-learn==1.7.2
+xgboost==3.2.0
+joblib==1.5.2
+scipy==1.17.1
+matplotlib==3.10.6
+shap==0.51.0
+openpyxl==3.1.5
+geopandas==1.1.1
+# Original embedding/language steps only (not needed to reproduce the A5 results):
+# sentence-transformers (model: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2)
+# transformers (model: papluca/xlm-roberta-base-language-detection), duckdb
+# Manuscript: pdfLaTeX + BibTeX (TeX Live 2026 / TinyTeX) with the official MDPI template (Definitions/, class of 11 Sep 2026)
