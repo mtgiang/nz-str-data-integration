@@ -1,0 +1,8 @@
+# Never commit source data (Inside Airbnb asks users not to republish it)
+01_raw/
+*.csv.gz
+*.parquet
+02_intermediate/
+03_processed/
+__pycache__/
+.ipynb_checkpoints/
