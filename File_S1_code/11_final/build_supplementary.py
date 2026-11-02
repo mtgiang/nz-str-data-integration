@@ -201,10 +201,10 @@ Screening: Evidence from New Zealand (MDPI *Data*).
 | Table S3 | Snapshot manifest with SHA-256 checksums of all source files |
 | Table S4 | Data dictionary |
 | Table S5 | Data-source inventory and licences |
-| Table S6 | Shareable derived data products: TA x transition aggregates (cells < 10 listings suppressed), release-aware construction and rental context layer, metric and ablation tables, synthetic schema sample |
-| File S1 | Analysis, audit, verification and revision code (notebook outputs removed) |
+| Table S6 | Shareable derived data products: TA x transition aggregates (cells < 10 listings suppressed), release-aware construction and rental context layer, metric and ablation tables, synthetic schema sample; aggregate outputs of the analyses added during peer review (`revision_R1/`) |
+| File S1 | Analysis, audit, verification and revision code (notebook outputs removed); peer-review analyses in `10_revision/reviewer_R1_analyses.py` and `reviewer_R2_analyses.py` (see DATA_ACCESS.md, Section 4) |
 | Audit_reports | Lineage, leakage, results-verification and licence reports |
-| DATA_ACCESS.md | Where to obtain each source file (Inside Airbnb snapshot URLs, archived-data request, Stats NZ/MBIE) |
+| DATA_ACCESS.md | Where to obtain each source file (Inside Airbnb snapshots and archived-data request, Stats NZ including the 2023 Census, MBIE) and how to run the peer-review analyses |
 | verify_snapshots.py | Checks locally obtained snapshots against the SHA-256 in Table S3 |
 
 ## Data policy
