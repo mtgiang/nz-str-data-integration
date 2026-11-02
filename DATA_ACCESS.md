@@ -49,8 +49,9 @@ Browsers may rename repeated downloads (for example `listings (1).csv.gz`); rena
 | Territorial Authority 2025 boundaries | Stats NZ Geographic Data Service, *Territorial Authority 2025 (generalised)* (CC BY 4.0): <https://datafinder.stats.govt.nz/> | TA 2025 shapefile (accessed 28 Sep 2026) | `01_raw/geography/` |
 | Rental bond data by Territorial Authority | MBIE Tenancy Services, *Rental bond data* (CC BY 3.0 NZ): <https://www.tenancy.govt.nz/about-tenancy-services/data-and-statistics/rental-bond-data/> | `detailed-monthly-tla-tenancy-september.csv` (file of 10 Sep 2026) | `01_raw/property_market/` |
 | Accommodation Data Programme (seasonality) | MBIE tourism data releases, *Accommodation Data Programme* (<https://www.mbie.govt.nz/>, search "Accommodation Data Programme") | `ADP_All_Measures.csv` (extract of 4 Oct 2026) | `01_raw/seasonality/` |
+| Dwelling counts by Territorial Authority, 2023 Census (used only in the revision analyses, to express consents per 1000 dwellings) | Stats NZ, *Census: Dwelling occupancy status and dwelling type (level 1) for dwellings, 2013, 2018, and 2023 Censuses* (dataset CEN23_HOU_018, released 3 October 2024; CC BY 4.0), Aotearoa Data Explorer: <https://explore.data.stats.govt.nz>. The territorial-authority totals were downloaded from Figure.NZ, *Census - Dwellings by type and territorial authority 2013, 2018 and 2023*: <https://figure.nz/table/ybTCVOi7FSQ28EAL> | `<FILE NAME>.csv` (downloaded <DD Month 2026>) | `01_raw/census/` |
 
-The processed release-aware construction and rental features are already provided in `Table_S6_shareable_data/ta_transition_context_layer.csv`, and the recomputed consent windows in `Table_S6_shareable_data/R6_ta_transition_construction_cells.csv`. These official series are revised over time, so a later download may differ slightly; the checksums in Table S3 identify the vintages used.
+The processed release-aware construction and rental features are already provided in `Table_S6_shareable_data/ta_transition_context_layer.csv`, and the recomputed consent windows in `Table_S6_shareable_data/R6_ta_transition_construction_cells.csv`. These official series are revised over time, so a later download may differ slightly; the checksums in Table S3 identify the vintages used. Census counts are randomly rounded by Stats NZ to protect confidentiality.
 
 ## 3. Reproduce
 
@@ -61,3 +62,17 @@ python verify_snapshots.py Table_S3_snapshot_manifest.csv
 ```
 
 To test the code without the source data, use `Table_S6_shareable_data/SYNTHETIC_listing_origin_sample.csv`. It has the panel schema but contains no real listings, so results obtained on it are meaningless.
+
+## 4. Analyses added during peer review (version 1.1.0)
+
+The post hoc analyses added in response to the reviewers (Appendix Tables A4–A10 and the corresponding text of the article) are produced by two scripts in `File_S1_code/10_revision/`:
+
+| Script | Analyses |
+|---|---|
+| `reviewer_R1_analyses.py` | Refits without horizon and origin-month terms; rule-based benchmarks; logistic regression and prevalence baseline; TA-code analysis; consents per 1000 dwellings; stored versus refitted predictions; Platt-calibrated expected event counts |
+| `reviewer_R2_analyses.py` | Confirmed-disappearance label; listing information age; refit without rental predictors; alternative thresholds; XGBoost tuning grid for A5 and A6; transition-level performance; within–between logistic model; alternative selection criteria; secondary-outcome diagnostics; screening workload |
+| `reviewer_analyses.ipynb` | Notebook that runs both scripts (outputs removed) |
+
+Run them from the project root after the main pipeline, because they read the modelling panel and the stored development and T10 predictions that the pipeline produces. The 2023 Census file in Section 2 is required only for the per-dwelling analysis. None of these analyses changes the frozen model, its threshold or the T10 results.
+
+The aggregate outputs (window-, transition- or TA-level metrics, without listing identifiers) are provided in `Table_S6_shareable_data/revision_R1/`. The scripts also write a refit cache (`10_revision_out/RV_cache/`) that contains listing-level predictions; it is not published and is recreated when the scripts are run.
